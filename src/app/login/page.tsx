@@ -1,3 +1,5 @@
+"use client"
+
 import { GalleryVerticalEnd } from "lucide-react"
 import Image from "next/image"
 import logo from "../assets/logo.png"
@@ -14,11 +16,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useRouter } from "next/navigation"
+import { AuthClient } from "better-auth/client"
 
 import { SignInForm } from "@/app/login/sign-in-form"
 import { SignUpForm } from "@/app/login/sign-up-form"
+import { useEffect } from "react"
+import { authClient } from "@/lib/auth-client"
 
 export default function LoginPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if the user is already authenticated
+    const checkAuth = async () => {
+      const session = await authClient.getSession();
+      if (session?.data != null) {
+        router.push('/dashboard');   // If authenticated, redirect to dashboard
+      }
+    };
+
+    checkAuth();
+  }, [router])
+
+
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
