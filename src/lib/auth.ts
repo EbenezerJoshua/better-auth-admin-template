@@ -4,19 +4,26 @@ import * as schema from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { sendEmail } from "./mailer";
+import { sendEmail } from "../emails/mailer";
 import { emailOTP } from "better-auth/plugins";
+import { sendPasswordResetEmail } from "@/emails/sendPasswordResetMail";
+import { sendVerificationEmail } from "@/emails/sendVerificationMail";
 
 export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
-        sendResetPassword: async ({ user, url, token }, request) => {
-            await sendEmail({
-                to: user.email,
-                subject: 'Reset your password',
-                text: `Click the link to reset your password: <a href="${url}">${url}</a>`
-            })
+        requireEmailVerification: true,
+        sendResetPassword: async ({ user, url }) => {
+            await sendPasswordResetEmail({ user, url });
         },
+    },
+
+    emailVerification: {
+        autoSignInAfterVerification: true,
+        sendOnSignUp: true,
+        sendVerificationEmail: async ({ user, url }, request) => {
+            await sendVerificationEmail({ user, url });
+        }
     },
     
     socialProviders: {

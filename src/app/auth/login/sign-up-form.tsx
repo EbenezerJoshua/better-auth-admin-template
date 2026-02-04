@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+// import { signUp, signIn } from "../../server/users"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -28,23 +29,25 @@ import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
 
 
-const signInSchema = z.object({
+const signUpSchema = z.object({
+  name: z.string(),
   email: z.string(),
   password: z.string(),
 })
 
-type SignInFormType = z.infer<typeof signInSchema>;
+type SignUpFormType = z.infer<typeof signUpSchema>;
 
-export function SignInForm() {
+export function SignUpForm() {
 
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const form = useForm<SignInFormType>({
-    resolver: zodResolver(signInSchema),
+  const form = useForm<SignUpFormType>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
-        email: "",
-        password: "",
+      name: "",
+      email: "",
+      password: "",
     },
   })
 
@@ -74,39 +77,35 @@ export function SignInForm() {
       callbackURL: "/dashboard"
     });
 
-     if (res.error) {
+    if (res.error) {
       toast.error(res.error.message || "Failed to Sign-In with Discord.")
     } else {
       toast.success("Signed-In with Discord successfully!")
     }
-  }
+  };
 
   // 2. Define a submit handler.
-  async function onSubmit(values: SignInFormType) {
-    // setIsLoading(true)
-    // const { success, message } = await signUp(values.email, values.password)
-
-    // if (success) {
-    //   toast.success(message as string)
-    //   router.push("/dashboard")
-    // } else {
-    //   toast.error(message as string)  
-    // }
+  async function onSubmit(values: SignUpFormType) {
+   
+    setIsLoading(true)
     
-    // setIsLoading(false)
-    // console.log(values)
-    
-    // setIsLoading(true)
     // Call the sign-up function from authClient
-    await authClient.signIn.email(
-      {...values, callbackURL: "/dashboard"},
+    await authClient.signUp.email(
+      {...values, callbackURL: "/auth/verify-email",},
       {
         onSuccess: () => {
-          toast.success("Signed in successfully!")
-          router.push("/dashboard")
+          sessionStorage.setItem(
+          "pending_verification_email",
+          JSON.stringify({
+            email: values.email,
+            createdAt: Date.now(),
+          })
+        );
+          toast.success("Account created. Verify your email.");
+          router.push("/auth/verify-email");
         },
         onError: (error) => {
-          toast.error(error.error.message || "Failed to Sign-In.")
+          toast.error(error.error.message || "Failed to Sign-Up.")
         },
         onSettled: () => {
           setIsLoading(false)
@@ -120,11 +119,26 @@ export function SignInForm() {
       <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <div className="flex flex-col items-center gap-1 text-center">
-            <h1 className="text-2xl font-bold">Sign into your account</h1>
+            <h1 className="text-2xl font-bold">Create your account</h1>
             <p className="text-muted-foreground text-sm text-balance">
-              Enter your email below to sign into your account
+              Enter your email below to create your account
             </p>
           </div>
+          <Field>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </Field>
           <Field>
             <FormField
               control={form.control}
@@ -156,7 +170,7 @@ export function SignInForm() {
             />
           </Field>
           <Field>
-            <Button type="submit" disabled={isLoading}>{isLoading ? "Signing In..." : "Sign In"}</Button>
+            <Button type="submit" disabled={isLoading}>{isLoading ? "Signing Up..." : "Sign Up"}</Button>
           </Field>
           <FieldDescription className="text-center">
             <Link href="/forgot-password" className="underline underline-offset-4">
@@ -165,7 +179,6 @@ export function SignInForm() {
           </FieldDescription>
           <FieldSeparator>Or continue with</FieldSeparator>
           <Field>
-
             <Button variant="outline" type="button" onClick={signInWithGoogle}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path
@@ -196,7 +209,6 @@ export function SignInForm() {
               </svg>
               Sign in with Discord
             </Button>
-
             <FieldDescription className="text-center">
               Don&apos;t have an account?{" "}
               <Link href="/signup" className="underline underline-offset-4">

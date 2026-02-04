@@ -2,7 +2,7 @@
 
 import { GalleryVerticalEnd } from "lucide-react"
 import Image from "next/image"
-import logo from "../assets/logo.png"
+import logo from "../../assets/logo.png"
 import {
   Tabs,
   TabsContent,
@@ -19,8 +19,8 @@ import {
 import { useRouter } from "next/navigation"
 import { AuthClient } from "better-auth/client"
 
-import { SignInForm } from "@/app/login/sign-in-form"
-import { SignUpForm } from "@/app/login/sign-up-form"
+import { SignInForm } from "@/app/auth/login/sign-in-form"
+import { SignUpForm } from "@/app/auth/login/sign-up-form"
 import { useEffect } from "react"
 import { authClient } from "@/lib/auth-client"
 
