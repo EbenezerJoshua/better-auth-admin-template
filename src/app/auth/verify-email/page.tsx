@@ -30,7 +30,7 @@ export default function VerifyEmailPage() {
     useState<PendingVerification | null>(null);
 
   const [checking, setChecking] = useState(true);
-  const [cooldown, setCooldown] = useState(0);
+  const [cooldown, setCooldown] = useState(30);
 
   /* ---------- Load pending verification ---------- */
   useEffect(() => {
@@ -105,6 +105,8 @@ export default function VerifyEmailPage() {
   /* ---------- Resend verification ---------- */
   const resendVerification = async () => {
     if (!pending || cooldown > 0) return;
+    toast.success("Requesting another verification email...");
+    setCooldown(RESEND_COOLDOWN_MS / 1000);
 
     const res = await authClient.sendVerificationEmail({
       email: pending.email,
@@ -125,7 +127,6 @@ export default function VerifyEmailPage() {
 
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     setPending(updated);
-    setCooldown(RESEND_COOLDOWN_MS / 1000);
   };
 
   if (checking || !pending) return null;
