@@ -1,4 +1,4 @@
-import { sendEmail } from "./mailer";
+import { sendEmail } from "./mailtrapMailer";
 
 type VerificationEmailOptions = {
     user : {
