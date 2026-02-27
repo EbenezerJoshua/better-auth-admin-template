@@ -54,15 +54,15 @@ export const auth = betterAuth({
     }),
 
     plugins: [
-        emailOTP({
-            async sendVerificationOTP({ email, otp, type }: { email: string, otp: string, type: "sign-in" | "email-verification" | "forget-password" }) {
-                await sendEmail({
-                    to: email,
-                    subject: "Your OTP",
-                    text: `Your OTP is ${otp}`
-                })
-            },
-        }),
+        // emailOTP({
+        //     async sendVerificationOTP({ email, otp, type }: { email: string, otp: string, type: "sign-in" | "email-verification" | "forget-password" }) {
+        //         await sendEmail({
+        //             to: email,
+        //             subject: "Your OTP",
+        //             text: `Your OTP is ${otp}`
+        //         })
+        //     },
+        // }),
         nextCookies()
     ],
 });

@@ -94,9 +94,7 @@ export function SignUpForm() {
       {...values, callbackURL: "/auth/verify-email",},
       {
         onSuccess: () => {
-          sessionStorage.setItem(
-          "pending_verification_email",
-          JSON.stringify({
+          sessionStorage.setItem("pending_verification_email", JSON.stringify({
             email: values.email,
             createdAt: Date.now(),
           })
@@ -173,7 +171,7 @@ export function SignUpForm() {
             <Button type="submit" disabled={isLoading}>{isLoading ? "Signing Up..." : "Sign Up"}</Button>
           </Field>
           <FieldDescription className="text-center">
-            <Link href="/forgot-password" className="underline underline-offset-4">
+            <Link href="/auth/forgot-password" className="underline underline-offset-4">
               Forgot Password ?
             </Link>
           </FieldDescription>

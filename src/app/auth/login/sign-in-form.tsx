@@ -11,7 +11,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -144,7 +143,7 @@ export function SignInForm() {
             <Button type="submit" disabled={isLoading}>{isLoading ? "Signing In..." : "Sign In"}</Button>
           </Field>
           <FieldDescription className="text-center">
-            <Link href="/forgot-password" className="underline underline-offset-4">
+            <Link href="/auth/forgot-password" className="underline underline-offset-4">
               Forgot Password ?
             </Link>
           </FieldDescription>
