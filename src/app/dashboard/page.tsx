@@ -15,12 +15,12 @@ export default function DashboardPage() {
     useEffect(() => {
         // Poll every 15 seconds to see if the session is still valid
         // 15 seconds is a much better balance for server load than 5 seconds.
-        const interval = setInterval(async () => {
-            const { data, error } = await authClient.getSession();
-            if (error || !data) {
-                router.push("/auth/login");
-            }
-        }, 15000); // 15 seconds
+        // const interval = setInterval(async () => {
+        //     const { data, error } = await authClient.getSession();
+        //     if (error || !data) {
+        //         router.push("/auth/login");
+        //     }
+        // }, 15000); // 15 seconds
 
         // Add event listener for window focus to check immediately when coming back
         const handleFocus = async () => {
@@ -32,7 +32,7 @@ export default function DashboardPage() {
         window.addEventListener("focus", handleFocus);
 
         return () => {
-            clearInterval(interval);
+            // clearInterval(interval);
             window.removeEventListener("focus", handleFocus);
         };
     }, [router]);

@@ -8,14 +8,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-// A simple function to guess the device and browser from the user agent string
-// This helps us display a nice name like "Windows - Chrome" instead of a long raw string.
 function parseUserAgent(userAgent: string) {
     let os = "Unknown Device";
     let browser = "Web Browser";
     let isMobile = false;
 
-    // 1. Guess the Operating System (OS)
     if (userAgent.includes("Windows")) os = "Windows";
     else if (userAgent.includes("Mac")) os = "MacOS";
     else if (userAgent.includes("Linux")) os = "Linux";
@@ -28,7 +25,6 @@ function parseUserAgent(userAgent: string) {
         isMobile = true;
     }
 
-    // 2. Guess the Web Browser
     if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) browser = "Chrome";
     else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) browser = "Safari";
     else if (userAgent.includes("Firefox")) browser = "Firefox";
@@ -43,14 +39,11 @@ export function SessionManager() {
     // Get the strictly *current* session directly from better-auth hook
     const { data: currentSessionData } = authClient.useSession();
 
-    // We store the list of active sessions here
     const [sessions, setSessions] = useState<any[]>([])
 
-    // Fetch the active sessions when the component loads
     const fetchSessions = async () => {
         try {
             const res = await authClient.listSessions()
-            // If we successfully get the data, update our state
             if (res.data) {
                 setSessions(res.data)
             }
@@ -65,9 +58,9 @@ export function SessionManager() {
 
         // Auto-refresh the list every 15 seconds so changes on other devices 
         // reflect here automatically without manually refreshing the page.
-        const interval = setInterval(() => {
-            fetchSessions()
-        }, 15000)
+        // const interval = setInterval(() => {
+        //     fetchSessions()
+        // }, 15000)
 
         // Also fetch immediately if the user switches tabs and comes back
         const handleFocus = () => {
@@ -76,7 +69,7 @@ export function SessionManager() {
         window.addEventListener("focus", handleFocus)
 
         return () => {
-            clearInterval(interval)
+            // clearInterval(interval)
             window.removeEventListener("focus", handleFocus)
         }
     }, [])
@@ -85,10 +78,10 @@ export function SessionManager() {
     const handleRevokeAllSessions = async () => {
         try {
             await authClient.revokeSessions();
-            setSessions([]) // Instantly make the UI empty
-            await authClient.signOut(); // Also sign out from the current device
+            setSessions([])
+            await authClient.signOut();
             toast.success("Successfully logged out of all devices.")
-            router.push("/auth/login") // Redirect immediately
+            router.push("/auth/login")
         } catch (error: any) {
             toast.error(error.message || "Failed to log out of all devices.")
         }
