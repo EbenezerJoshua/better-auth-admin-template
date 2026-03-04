@@ -2,23 +2,14 @@
 
 import { GalleryVerticalEnd } from "lucide-react"
 import Image from "next/image"
-import logo from "../../assets/logo.png"
+import logo from "../../assets/better-auth-logo.png"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { useRouter } from "next/navigation"
-import { AuthClient } from "better-auth/client"
-
 import { SignInForm } from "@/app/auth/login/sign-in-form"
 import { SignUpForm } from "@/app/auth/login/sign-up-form"
 import { useEffect } from "react"
