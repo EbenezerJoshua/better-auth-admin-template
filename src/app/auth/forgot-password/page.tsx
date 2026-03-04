@@ -20,7 +20,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect, Suspense } from "react"

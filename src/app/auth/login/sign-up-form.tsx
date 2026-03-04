@@ -26,7 +26,7 @@ import { z } from "zod"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
 
 
 const signUpSchema = z.object({
@@ -86,19 +86,19 @@ export function SignUpForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: SignUpFormType) {
-   
+
     setIsLoading(true)
-    
+
     // Call the sign-up function from authClient
     await authClient.signUp.email(
-      {...values, callbackURL: "/auth/verify-email",},
+      { ...values, callbackURL: "/auth/verify-email", },
       {
         onSuccess: () => {
           sessionStorage.setItem("pending_verification_email", JSON.stringify({
             email: values.email,
             createdAt: Date.now(),
           })
-        );
+          );
           toast.success("Account created. Verify your email.");
           router.push("/auth/verify-email");
         },

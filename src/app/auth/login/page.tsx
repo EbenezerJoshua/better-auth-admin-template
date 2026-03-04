@@ -22,7 +22,7 @@ import { AuthClient } from "better-auth/client"
 import { SignInForm } from "@/app/auth/login/sign-in-form"
 import { SignUpForm } from "@/app/auth/login/sign-up-form"
 import { useEffect } from "react"
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
 
 export default function LoginPage() {
   const router = useRouter()
