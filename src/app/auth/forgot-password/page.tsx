@@ -85,7 +85,9 @@ function ForgotPasswordFormContent() {
           )
         },
         onSuccess: () => {
-          toast.success("Password reset email sent")
+          toast.success("Password reset email sent!", {
+            description: "Please check your inbox for the reset link.",
+          })
           // Set a 30 second cooldown before they can click send again
           setCooldown(30)
         },

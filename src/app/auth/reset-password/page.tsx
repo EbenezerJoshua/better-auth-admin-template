@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { Suspense } from "react"
 
 const resetPasswordSchema = z.object({
   password: z.string().min(6),
@@ -31,7 +32,7 @@ const resetPasswordSchema = z.object({
 
 type ResetPasswordForm = z.infer<typeof resetPasswordSchema>
 
-export default function ResetPasswordPage() {
+function ResetPasswordFormContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
@@ -60,10 +61,10 @@ export default function ResetPasswordPage() {
         },
         onSuccess: () => {
           toast.success("Password reset successful", {
-            description: "Redirection to login...",
+            description: "Attempting to Auto-Login...",
           })
           setTimeout(() => {
-            router.push("/auth/login")
+            router.push("/dashboard")
           }, 1000)
         },
       }
@@ -91,10 +92,11 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="my-6 px-4">
-      <Card className="w-full max-w-md mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl">Reset Your Password</CardTitle>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">Reset Your Password</CardTitle>
+          <CardDescription>Enter a new secure password below.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -124,5 +126,13 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ResetPasswordFormContent />
+    </Suspense>
   )
 }
