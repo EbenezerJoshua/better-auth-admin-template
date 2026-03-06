@@ -27,7 +27,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { authClient } from "@/lib/auth/auth-client"
-
+import { PasswordInput } from "@/components/ui/password-input"
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -102,8 +102,9 @@ export function SignUpForm() {
           toast.success("Account created. Verify your email.");
           router.push("/auth/verify-email");
         },
-        onError: (error) => {
-          toast.error(error.error.message || "Failed to Sign-Up.")
+        onError: (ctx) => {
+          toast.error(ctx.error.message || "Failed to Sign-Up.")
+          setIsLoading(false)
         },
         onSettled: () => {
           setIsLoading(false)
@@ -160,7 +161,7 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} type="password" />
+                    <PasswordInput {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

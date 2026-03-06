@@ -44,8 +44,6 @@ export default function DashboardPage() {
         }
     }, [session, loading, router]);
 
-
-
     // Show nothing while redirecting
     if (!session && !loading) {
         return null;

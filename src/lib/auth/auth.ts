@@ -8,6 +8,7 @@ import { sendEmail } from "../../emails/mailtrapMailer";
 import { emailOTP } from "better-auth/plugins";
 import { sendPasswordResetEmail } from "@/emails/sendPasswordResetMail";
 import { sendVerificationEmail } from "@/emails/sendVerificationMail";
+import { sendExistingUserSignUpMail } from "@/emails/sendExistingUserSignUpMail";
 
 export const auth = betterAuth({
     emailAndPassword: {
@@ -15,6 +16,11 @@ export const auth = betterAuth({
         requireEmailVerification: true,
         sendResetPassword: async ({ user, url }) => {
             await sendPasswordResetEmail({ user, url });
+        },
+        onExistingUserSignUp: async (data: any) => {
+            if (data?.user) {
+                await sendExistingUserSignUpMail({ user: data.user });
+            }
         },
     },
 

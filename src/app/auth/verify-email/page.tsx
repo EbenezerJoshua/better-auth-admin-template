@@ -106,7 +106,7 @@ export default function VerifyEmailPage() {
   /* ---------- Resend verification ---------- */
   const resendVerification = async () => {
     if (!pending || cooldown > 0) return;
-    toast.success("Requesting another verification email...");
+    toast("Requesting another verification email...");
     setCooldown(RESEND_COOLDOWN_MS / 1000);
 
     const res = await authClient.sendVerificationEmail({

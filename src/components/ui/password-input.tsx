@@ -17,6 +17,7 @@ export function PasswordInput({
     <div className="relative">
       <Input
         {...props}
+        placeholder="********"
         type={showPassword ? "text" : "password"}
         className={cn("pr-9", className)}
       />

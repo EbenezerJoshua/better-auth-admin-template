@@ -79,9 +79,9 @@ function ForgotPasswordFormContent() {
         redirectTo: "/auth/reset-password",
       },
       {
-        onError: error => {
+        onError: ctx => {
           toast.error(
-            error.error.message || "Failed to send password reset email"
+            ctx.error.message || "Failed to send password reset email"
           )
         },
         onSuccess: () => {
