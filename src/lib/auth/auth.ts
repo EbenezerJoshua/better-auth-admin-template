@@ -9,6 +9,8 @@ import { emailOTP } from "better-auth/plugins";
 import { sendPasswordResetEmail } from "@/emails/sendPasswordResetMail";
 import { sendVerificationEmail } from "@/emails/sendVerificationMail";
 import { sendExistingUserSignUpMail } from "@/emails/sendExistingUserSignUpMail";
+import { createAuthMiddleware } from "better-auth/api";
+import { sendWelcomeEmail } from "@/emails/sendWelcomeEmail";
 
 export const auth = betterAuth({
     emailAndPassword: {
@@ -71,4 +73,19 @@ export const auth = betterAuth({
         // }),
         nextCookies()
     ],
+    hooks: {
+        after: createAuthMiddleware(async ctx => {
+            if (ctx.path.startsWith("/sign-up")) {
+                const user = ctx.context.newSession?.user ?? {
+                    name: ctx.body.name,
+                    email: ctx.body.email,
+                }
+
+                if (user != null) {
+                    // await sendWelcomeEmail(user) // This will not work in testing environment because of the limitations with mailtrap in free account. It cannot send multiple emails in the free tier
+                }
+            }
+        }),
+    },
 });
+    

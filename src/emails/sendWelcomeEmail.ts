@@ -37,7 +37,7 @@ const emailHTMLTemplate = (name: string) => `
 
                 <p style="text-align:center; margin:32px 0;">
                   <a
-                    href="https://your-domain.com/dashboard"
+                    href="https://localhost:3000/dashboard"
                     style="
                       display:inline-block;
                       padding:14px 28px;
