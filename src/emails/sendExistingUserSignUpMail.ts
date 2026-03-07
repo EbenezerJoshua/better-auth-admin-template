@@ -37,7 +37,7 @@ const emailHTMLTemplate = () => `
                 </p>
                 <p style="text-align:center; margin:24px 0;">
                   <a
-                    href="\${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/login"
+                    href="\${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/auth/login"
                     style="
                       display:inline-block;
                       padding:12px 20px;
