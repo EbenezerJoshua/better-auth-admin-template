@@ -26,8 +26,8 @@ import { ReactNode, Suspense } from "react"
 import { SetPasswordButton } from "./components/set-password-button"
 import { ChangePasswordForm } from "./components/change-password-form"
 import { SessionManagement } from "./components/session-management"
-// import { AccountLinking } from "./_components/account-linking"
-// import { AccountDeletion } from "./_components/account-deletion"
+import { AccountLinking } from "./components/account-linking"
+import { AccountDeletion } from "./components/account-deletion"
 // import { TwoFactorAuth } from "./_components/two-factor-auth"
 // import { PasskeyManagement } from "./_components/passkey-management"
 
@@ -115,7 +115,7 @@ export default async function ProfilePage() {
           </LoadingSuspense>
         </TabsContent>
 
-        {/* <TabsContent value="accounts">
+        <TabsContent value="accounts">
           <LoadingSuspense>
             <LinkedAccountsTab />
           </LoadingSuspense>
@@ -130,26 +130,26 @@ export default async function ProfilePage() {
               <AccountDeletion />
             </CardContent>
           </Card>
-        </TabsContent> */}
+        </TabsContent>
       </Tabs>
     </div>
   )
 }
 
-// async function LinkedAccountsTab() {
-//   const accounts = await auth.api.listUserAccounts({ headers: await headers() })
-//   const nonCredentialAccounts = accounts.filter(
-//     a => a.providerId !== "credential"
-//   )
+async function LinkedAccountsTab() {
+  const accounts = await auth.api.listUserAccounts({ headers: await headers() })
+  const nonCredentialAccounts = accounts.filter(
+    a => a.providerId !== "credential"
+  )
 
-//   return (
-//     <Card>
-//       <CardContent>
-//         <AccountLinking currentAccounts={nonCredentialAccounts} />
-//       </CardContent>
-//     </Card>
-//   )
-// }
+  return (
+    <Card>
+      <CardContent>
+        <AccountLinking currentAccounts={nonCredentialAccounts} />
+      </CardContent>
+    </Card>
+  )
+}
 
 async function SessionsTab({
   currentSessionToken,

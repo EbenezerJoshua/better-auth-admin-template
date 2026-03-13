@@ -96,7 +96,7 @@ export const auth = betterAuth({
         //         })
         //     },
         // }),
-        // nextCookies()
+        nextCookies()
     ],
     hooks: {
         after: createAuthMiddleware(async ctx => {
