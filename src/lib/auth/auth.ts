@@ -12,22 +12,24 @@ import { sendVerificationEmail } from "@/emails/sendVerificationMail";
 import { sendExistingUserSignUpMail } from "@/emails/sendExistingUserSignUpMail";
 import { createAuthMiddleware } from "better-auth/api";
 import { sendWelcomeEmail } from "@/emails/sendWelcomeEmail";
+import { sendChangeEmailVerificationMail } from "@/emails/sendChangeEmailVerificationMail";
+import { sendDeleteAccountVerificationMail } from "@/emails/sendDeleteAccountVerificationMail";
 
 export const auth = betterAuth({
     user: {
         changeEmail: {
             enabled: true,
-            // sendChangeEmailVerification: async ({ user, url, newEmail }) => {
-            //     await sendEmailVerificationEmail({
-            //         user: { ...user, email: newEmail },
-            //         url,
-            //     })
-            // },
+            sendChangeEmailVerification: async ({ user, url, newEmail }: { user: any, url: string, newEmail: string }) => {
+                await sendChangeEmailVerificationMail({
+                    user: { ...user, email: newEmail },
+                    url,
+                });
+            },
         },
         deleteUser: {
             enabled: true,
-            sendDeleteAccountVerification: async ({ user, url }) => {
-                // await sendDeleteAccountVerificationEmail({ user, url })
+            sendDeleteAccountVerification: async ({ user, url }: { user: any, url: string }) => {
+                await sendDeleteAccountVerificationMail({ user, url });
             },
         },
         // additionalFields: {
