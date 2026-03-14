@@ -64,7 +64,7 @@ export function SignInForm() {
         onError: (ctx) => {
           if (ctx.error.status === 403) {
             toast.error("Please verify your email address");
-          router.push("/verify-email")
+            router.push("/verify-email")
           } else {
             toast.error(ctx.error.message || "Failed to Sign-In.")
           }
