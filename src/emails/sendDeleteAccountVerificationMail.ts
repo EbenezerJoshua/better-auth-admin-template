@@ -85,7 +85,7 @@ const emailHTMLTemplate = (url: string) => `
             <tr>
               <td style="padding: 32px; background-color: #fef2f2; border-top: 1px solid #fee2e2; color: #991b1b; font-size: 12px; text-align: center;">
                 <p style="margin: 0 0 8px 0;">
-                  &copy; 2025 Better Auth. All rights reserved.
+                  &copy; 2025 Better Auth Template. All rights reserved.
                 </p>
                 <p style="margin: 0;">
                   This link will expire for security reasons.

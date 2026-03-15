@@ -24,7 +24,7 @@ export async function sendEmail({ to, subject, text, html }: SendEmailOptions) {
     }
 
     await transporter.sendMail({
-        from: `"Better Auth App" <${process.env.MAILTRAP_FROM_EMAIL}>`,
+        from: `"Better Auth Template App" <${process.env.MAILTRAP_FROM_EMAIL}>`,
         to,
         subject,
         text,

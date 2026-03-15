@@ -29,7 +29,7 @@ const emailHTMLTemplate = (url: string) => `
                 <div style="background-color: #0f172a; width: 48px; height: 48px; border-radius: 12px; display: inline-block; line-height: 48px; color: #ffffff; font-size: 24px; font-weight: bold;">
                   B
                 </div>
-                <h2 style="margin: 16px 0 0 0; font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.025em;">Better Auth</h2>
+                <h2 style="margin: 16px 0 0 0; font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.025em;">Better Auth Template</h2>
               </td>
             </tr>
 
@@ -81,7 +81,7 @@ const emailHTMLTemplate = (url: string) => `
             <tr>
               <td style="padding: 32px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 12px; text-align: center;">
                 <p style="margin: 0 0 8px 0;">
-                  &copy; 2025 Better Auth. All rights reserved.
+                  &copy; 2025 Better Auth Template. All rights reserved.
                 </p>
                 <p style="margin: 0;">
                   This link will expire for security reasons.
