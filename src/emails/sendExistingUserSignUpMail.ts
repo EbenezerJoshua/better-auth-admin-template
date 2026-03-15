@@ -27,9 +27,7 @@ const emailHTMLTemplate = () => {
             <!-- Header/Logo -->
             <tr>
               <td style="padding: 40px 40px 0 40px; text-align: center;">
-                <div style="background-color: #0f172a; width: 48px; height: 48px; border-radius: 12px; display: inline-block; line-height: 48px; color: #ffffff; font-size: 24px; font-weight: bold;">
-                  ${appName.charAt(0)}
-                </div>
+                <img src="${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/favicon.ico" width="48" height="48" alt="Logo" style="display: inline-block; border-radius: 12px;" />
                 <h2 style="margin: 16px 0 0 0; font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.025em;">${appName}</h2>
               </td>
             </tr>

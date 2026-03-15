@@ -28,9 +28,7 @@ const emailHTMLTemplate = (url: string) => {
             <!-- Header/Logo (Danger Variaton) -->
             <tr>
               <td style="padding: 40px 40px 0 40px; text-align: center;">
-                <div style="background-color: #dc2626; width: 48px; height: 48px; border-radius: 12px; display: inline-block; line-height: 48px; color: #ffffff; font-size: 24px; font-weight: bold;">
-                  !
-                </div>
+                <img src="${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/favicon.ico" width="48" height="48" alt="Logo" style="display: inline-block; border-radius: 12px; border: 2px solid #dc2626;" />
                 <h2 style="margin: 16px 0 0 0; font-size: 20px; font-weight: 700; color: #dc2626; letter-spacing: -0.025em;">Action Required</h2>
               </td>
             </tr>
