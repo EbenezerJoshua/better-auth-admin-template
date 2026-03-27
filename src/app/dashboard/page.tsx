@@ -76,20 +76,28 @@ export default function DashboardPage() {
 
                 {/* Profile Overview Card */}
                 {session ? (
-                    <div className="max-w-xl mx-auto w-full p-6 border rounded-xl bg-card text-card-foreground shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div>
-                            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Logged in as</p>
-                            <p className="text-xl font-semibold mt-1">{session.user.name}</p>
-                            <p className="text-sm text-muted-foreground">{session.user.email}</p>
+                    <div className="max-w-xl mx-auto w-full space-y-4">
+                        <div className="p-6 border rounded-xl bg-card text-card-foreground shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Logged in as</p>
+                                <p className="text-xl font-semibold mt-1">{session.user.name}</p>
+                                <p className="text-sm text-muted-foreground">{session.user.email}</p>
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                                <Button variant="outline" asChild>
+                                    <Link href="/profile">Manage Profile</Link>
+                                </Button>
+                                <Button variant="destructive" onClick={handleSignOut}>
+                                    Sign Out
+                                </Button>
+                            </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <Button variant="outline" asChild>
-                                <Link href="/profile">Manage Profile</Link>
+
+                        {session.user.role === "admin" && (
+                            <Button variant="secondary" className="w-full h-12 text-sm font-semibold uppercase tracking-wider shadow-sm" asChild>
+                                <Link href="/admin">Admin Panel</Link>
                             </Button>
-                            <Button variant="destructive" onClick={handleSignOut}>
-                                Sign Out
-                            </Button>
-                        </div>
+                        )}
                     </div>
                 ) : null}
 

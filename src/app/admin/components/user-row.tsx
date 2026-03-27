@@ -20,12 +20,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { TableCell, TableRow } from "@/components/ui/table"
 import { authClient } from "@/lib/auth/auth-client"
 import { UserWithRole } from "better-auth/plugins/admin"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Shield, User, Calendar, Mail } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import Image from "next/image"
 
 export function UserRow({
   user,
@@ -113,55 +113,103 @@ export function UserRow({
   }
 
   return (
-    <TableRow key={user.id}>
-      <TableCell>
-        <div>
-          <div className="font-medium">{user.name || "No name"}</div>
-          <div className="text-sm text-muted-foreground">{user.email}</div>
-          <div className="flex items-center gap-2 not-empty:mt-2">
-            {user.banned && <Badge variant="destructive">Banned</Badge>}
-            {!user.emailVerified && <Badge variant="outline">Unverified</Badge>}
-            {isSelf && <Badge>You</Badge>}
-          </div>
+    <div
+      key={user.id}
+      className={`flex items-center justify-between p-4 rounded-xl border bg-card transition-all hover:border-primary/50 ${isSelf ? "border-primary/30 bg-primary/5" : "border-border"}`}
+    >
+      <div className="flex items-center gap-4">
+        <div className="size-12 bg-muted rounded-full flex items-center justify-center overflow-hidden border-2 border-background shadow-sm">
+          {user.image ? (
+            <Image
+              width={48}
+              height={48}
+              src={user.image}
+              alt={user.name}
+              className="object-cover"
+            />
+          ) : (
+            <User className="size-6 text-muted-foreground" />
+          )}
         </div>
-      </TableCell>
-      <TableCell>
-        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
-          {user.role}
-        </Badge>
-      </TableCell>
-      <TableCell>{new Date(user.createdAt).toLocaleDateString('en-GB')}</TableCell>
-      <TableCell>
+
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-foreground leading-none">
+              {user.name || "Anonymous User"}
+            </p>
+            {isSelf && (
+              <Badge variant="secondary" className="text-[10px] h-4 uppercase font-bold bg-primary/10 text-primary hover:bg-primary/10 border-none">
+                You
+              </Badge>
+            )}
+            <Badge variant={user.role === "admin" ? "default" : "secondary"} className="text-[10px] h-4 uppercase font-bold">
+              {user.role}
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Mail className="size-3" />
+              {user.email}
+              {!user.emailVerified && (
+                <span className="text-[10px] text-orange-500 font-medium ml-1 bg-orange-500/10 px-1.5 py-0.5 rounded-full border border-orange-500/20">
+                  Unverified
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-1">
+              <Calendar className="size-3" />
+              Joined {new Date(user.createdAt).toLocaleDateString('en-GB')}
+            </div>
+          </div>
+          
+          {user.banned && (
+            <div className="mt-1">
+              <Badge variant="destructive" className="text-[10px] h-4 uppercase font-bold">
+                Banned
+              </Badge>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
         {!isSelf && (
           <AlertDialog>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreHorizontal />
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
+                  <MoreHorizontal className="size-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem
                   onClick={() => handleImpersonateUser(user.id)}
+                  className="gap-2"
                 >
+                  <Shield className="size-4" />
                   Impersonate
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleRevokeSessions(user.id)}>
+                <DropdownMenuItem onClick={() => handleRevokeSessions(user.id)} className="gap-2">
+                  <User className="size-4" />
                   Revoke Sessions
                 </DropdownMenuItem>
                 {user.banned ? (
-                  <DropdownMenuItem onClick={() => handleUnbanUser(user.id)}>
+                  <DropdownMenuItem onClick={() => handleUnbanUser(user.id)} className="gap-2">
+                    <User className="size-4" />
                     Unban User
                   </DropdownMenuItem>
                 ) : (
-                  <DropdownMenuItem onClick={() => handleBanUser(user.id)}>
+                  <DropdownMenuItem onClick={() => handleBanUser(user.id)} className="gap-2">
+                    <User className="size-4 text-orange-500" />
                     Ban User
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
 
                 <AlertDialogTrigger asChild>
-                  <DropdownMenuItem variant="destructive">
+                  <DropdownMenuItem variant="destructive" className="gap-2">
+                    <MoreHorizontal className="size-4" />
                     Delete User
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
@@ -171,8 +219,8 @@ export function UserRow({
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete User</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete this user? This action cannot
-                  be undone.
+                  Are you sure you want to delete <strong>{user.name}</strong>? This action cannot
+                  be undone and will remove all their data.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -181,13 +229,13 @@ export function UserRow({
                   onClick={() => handleRemoveUser(user.id)}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  Delete
+                  Delete User
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         )}
-      </TableCell>
-    </TableRow>
+      </div>
+    </div>
   )
 }
