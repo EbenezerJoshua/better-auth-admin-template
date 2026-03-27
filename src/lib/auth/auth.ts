@@ -4,7 +4,7 @@ import * as schema from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { emailOTP, oneTap } from "better-auth/plugins";
+import { admin as adminPlugin, emailOTP, oneTap } from "better-auth/plugins";
 import { twoFactor } from "better-auth/plugins/two-factor"
 import { passkey } from "@better-auth/passkey"
 import { sendPasswordResetEmail } from "@/emails/sendPasswordResetMail";
@@ -14,6 +14,7 @@ import { createAuthMiddleware } from "better-auth/api";
 import { sendWelcomeEmail } from "@/emails/sendWelcomeEmail";
 import { sendChangeEmailVerificationMail } from "@/emails/sendChangeEmailVerificationMail";
 import { sendDeleteAccountVerificationMail } from "@/emails/sendDeleteAccountVerificationMail";
+import { ac, admin, user } from "@/lib/auth/permissions"
 
 export const auth = betterAuth({
     user: {
@@ -33,10 +34,10 @@ export const auth = betterAuth({
             },
         },
         // additionalFields: {
-        // favoriteNumber: {
-        //     type: "number",
-        //     required: true,
-        // },
+            // favoriteNumber: {
+            //     type: "number",
+            //     required: true,
+            // },
         // },
     },
     emailAndPassword: {
@@ -91,15 +92,13 @@ export const auth = betterAuth({
         twoFactor(),
         passkey(),
         oneTap(),
-        // emailOTP({
-        //     async sendVerificationOTP({ email, otp, type }: { email: string, otp: string, type: "sign-in" | "email-verification" | "forget-password" }) {
-        //         await sendEmail({
-        //             to: email,
-        //             subject: "Your OTP",
-        //             text: `Your OTP is ${otp}`
-        //         })
-        //     },
-        // }),
+        adminPlugin({
+            ac,
+            roles: {
+                admin,
+                user,
+            },
+        }),
         nextCookies()
     ],
     hooks: {
