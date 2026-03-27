@@ -5,16 +5,19 @@ import { headers } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { UserRow } from "./components/user-row"
+import { authClient } from "@/lib/auth/auth-client"
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
 
   if (session == null) return redirect("/auth/login")
-  const hasAccess = await auth.api.userHasPermission({
+
+  const hasAdminAccess = await auth.api.userHasPermission({
     headers: await headers(),
-    body: { permissions: { user: ["list"] } },
+    body: { permissions: { user: ["list", "ban", "impersonate", "delete",], session: ["revoke"]}},
   })
-  if (!hasAccess.success) return redirect("/")
+
+  if (!hasAdminAccess.success) return redirect("/")
 
   const users = await auth.api.listUsers({
     headers: await headers(),

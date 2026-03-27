@@ -7,9 +7,6 @@ import {
 
 export const ac = createAccessControl(defaultStatements)
 
-export const user = ac.newRole({
-  ...userAc.statements,
-  user: [...userAc.statements.user, "list"],
-})
+export const user = ac.newRole(userAc.statements)
 
 export const admin = ac.newRole(adminAc.statements)
