@@ -4,9 +4,8 @@ import { ArrowLeft, Users } from "lucide-react"
 import { headers } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { UserRow } from "./components/user-row"
-import { authClient } from "@/lib/auth/auth-client"
 import { CreateUserDialog } from "./components/create-user-dialog"
+import { UserListClient } from "./components/user-list-client"
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -19,11 +18,6 @@ export default async function AdminPage() {
   })
 
   if (!hasAdminAccess.success) return redirect("/")
-
-  const users = await auth.api.listUsers({
-    headers: await headers(),
-    query: { limit: 100, sortBy: "createdAt", sortDirection: "desc" },
-  })
 
   return (
     <div className="max-w-4xl mx-auto my-6 px-4">
@@ -39,7 +33,7 @@ export default async function AdminPage() {
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3">
               <Users className="size-8 text-primary" />
-              Users ({users.total})
+              Users
             </h1>
             <p className="text-muted-foreground mt-1">
               Manage user accounts, roles, and permissions across the platform
@@ -49,16 +43,7 @@ export default async function AdminPage() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        {users.users.map(user => (
-          <UserRow key={user.id} user={user} selfId={session.user.id} />
-        ))}
-        {users.users.length === 0 && (
-          <div className="text-center py-12 border rounded-xl bg-card">
-            <p className="text-muted-foreground">No users found.</p>
-          </div>
-        )}
-      </div>
+      <UserListClient selfId={session.user.id} />
     </div>
   )
 }

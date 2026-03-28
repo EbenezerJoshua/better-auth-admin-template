@@ -11,12 +11,16 @@ A sophisticated, production-ready authentication and administration foundation f
 - **Email & Password**: Secure credential-based authentication with password hashing.
 - **Magic Links / One Tap**: Frictionless login experience with Google One Tap integrated.
 - **Email Verification**: Mandatory verification flow to ensure high-quality user data and security.
+- **Automated Verification Flow**: Intelligent redirection for unverified users, automatically firing verification emails upon login attempts to ensure a smooth onboarding experience.
 
 ### 🛡️ Powerful Admin Dashboard
 - **User Management**: 
   - **Comprehensive List**: View all registered users with their roles, status, and join dates.
+  - **Create New Users**: Directly add new user accounts with initial passwords and role assignments.
   - **Account Actions**: Ban or unban users instantly to maintain platform integrity.
-  - **Session Revocation**: Remotely terminate all active sessions for any user.
+  - **Password Management**: Securely set or reset user passwords through a dedicated administrative interface.
+  - **Profile & Role Updates**: Effortlessly update user names and toggle administrative permissions.
+  - **Granular Session Management**: View active sessions with device/browser info and revoke specific sessions or all sessions at once.
   - **User Deletion**: Securely remove user accounts and all associated data.
 - **Impersonation**: Securely log in as any user to troubleshoot issues or provide direct support.
 - **Role-Based Access Control (RBAC)**: Fine-grained permissions for Admin and User roles.
