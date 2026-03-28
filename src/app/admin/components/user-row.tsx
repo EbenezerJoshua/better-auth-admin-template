@@ -22,10 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { UserWithRole } from "better-auth/plugins/admin"
-import { MoreHorizontal, Shield, User, Calendar, Mail,Trash2, UserRoundX } from "lucide-react"
+import { MoreHorizontal, Shield, User, Calendar, Mail, Trash2, UserRoundX, Edit2, KeyRound, Monitor } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Image from "next/image"
+import { useState } from "react"
+import { SetPasswordDialog } from "./set-password-dialog"
+import { UpdateUserDialog } from "./update-user-dialog"
+import { ManageSessionsDialog } from "./manage-sessions-dialog"
 
 export function UserRow({
   user,
@@ -36,6 +40,7 @@ export function UserRow({
 }) {
   const { refetch } = authClient.useSession()
   const router = useRouter()
+  const [dialogOpen, setDialogOpen] = useState<"password" | "update" | "sessions" | null>(null)
   const isSelf = user.id === selfId
 
   function handleImpersonateUser(userId: string) {
@@ -78,20 +83,6 @@ export function UserRow({
         onSuccess: () => {
           toast.success("User unbanned")
           router.refresh()
-        },
-      }
-    )
-  }
-
-  function handleRevokeSessions(userId: string) {
-    authClient.admin.revokeUserSessions(
-      { userId },
-      {
-        onError: error => {
-          toast.error(error.error.message || "Failed to revoke user sessions")
-        },
-        onSuccess: () => {
-          toast.success("User sessions revoked")
         },
       }
     )
@@ -183,16 +174,26 @@ export function UserRow({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => setDialogOpen("update")} className="gap-2">
+                  <Edit2 className="size-4" />
+                  Update User
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDialogOpen("password")} className="gap-2">
+                  <KeyRound className="size-4" />
+                  Set Password
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDialogOpen("sessions")} className="gap-2">
+                  <Monitor className="size-4" />
+                  Manage Sessions
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+
                 <DropdownMenuItem
                   onClick={() => handleImpersonateUser(user.id)}
                   className="gap-2"
                 >
                   <Shield className="size-4" />
                   Impersonate
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleRevokeSessions(user.id)} className="gap-2">
-                  <User className="size-4" />
-                  Revoke Sessions
                 </DropdownMenuItem>
                 {user.banned ? (
                   <DropdownMenuItem onClick={() => handleUnbanUser(user.id)} className="gap-2">
@@ -236,6 +237,27 @@ export function UserRow({
           </AlertDialog>
         )}
       </div>
+
+      <SetPasswordDialog 
+        open={dialogOpen === "password"} 
+        onOpenChange={(open) => !open && setDialogOpen(null)} 
+        userId={user.id} 
+        userName={user.name || "Anonymous User"} 
+      />
+      
+      <UpdateUserDialog 
+        open={dialogOpen === "update"} 
+        onOpenChange={(open) => !open && setDialogOpen(null)} 
+        userId={user.id} 
+        user={{ name: user.name || "", role: user.role || "user" }} 
+      />
+      
+      <ManageSessionsDialog 
+        open={dialogOpen === "sessions"} 
+        onOpenChange={(open) => !open && setDialogOpen(null)} 
+        userId={user.id} 
+        userName={user.name || "Anonymous User"} 
+      />
     </div>
   )
 }

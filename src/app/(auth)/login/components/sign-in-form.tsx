@@ -61,9 +61,20 @@ export function SignInForm() {
           toast.success("Signed in successfully!")
           router.push("/dashboard")
         },
-        onError: (ctx) => {
+        onError: async (ctx) => {
           if (ctx.error.status === 403) {
             toast.error("Please verify your email address");
+            sessionStorage.setItem(
+              "pending_verification_email",
+              JSON.stringify({
+                email: values.email,
+                createdAt: Date.now(),
+              })
+            );
+            await authClient.sendVerificationEmail({
+              email: values.email,
+              callbackURL: "/dashboard"
+            });
             router.push("/verify-email")
           } else {
             toast.error(ctx.error.message || "Failed to Sign-In.")

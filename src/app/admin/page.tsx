@@ -6,6 +6,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { UserRow } from "./components/user-row"
 import { authClient } from "@/lib/auth/auth-client"
+import { CreateUserDialog } from "./components/create-user-dialog"
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -14,7 +15,7 @@ export default async function AdminPage() {
 
   const hasAdminAccess = await auth.api.userHasPermission({
     headers: await headers(),
-    body: { permissions: { user: ["list", "ban", "impersonate", "delete",], session: ["revoke"]}},
+    body: { permissions: { user: ["list", "ban", "impersonate", "delete", "create", "set-password", "update"], session: ["list", "revoke"]}},
   })
 
   if (!hasAdminAccess.success) return redirect("/")
@@ -44,6 +45,7 @@ export default async function AdminPage() {
               Manage user accounts, roles, and permissions across the platform
             </p>
           </div>
+          <CreateUserDialog />
         </div>
       </div>
 
