@@ -12,7 +12,7 @@ import { Search, X, Loader2 } from "lucide-react"
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type RoleFilter = "all" | "admin" | "user"
-type StatusFilter = "all" | "active" | "banned"
+type StatusFilter = "all" | "active" | "banned" | "pending"
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -57,7 +57,7 @@ export function UserListClient({ selfId }: { selfId: string }) {
         query.filterOperator = "eq"
       }
 
-      // Banned status filter
+      // Banned status filter — mutually exclusive with invitePending
       if (status === "banned") {
         query.filterField = "banned"
         query.filterValue = true
@@ -66,12 +66,26 @@ export function UserListClient({ selfId }: { selfId: string }) {
         query.filterField = "banned"
         query.filterValue = false
         query.filterOperator = "eq"
+      } else if (status === "pending") {
+        // Filter for users awaiting their invite — invitePending = true
+        query.filterField = "invitePending"
+        query.filterValue = true
+        query.filterOperator = "eq"
       }
 
       const res = await authClient.admin.listUsers({ query })
 
       if (res.data) {
-        setUsers(res.data.users)
+        let fetchedUsers = res.data.users
+
+        // For the pending filter, also exclude anyone who has since verified
+        // their email (they completed the invite flow — emailVerified = true).
+        // We do this client-side because Better Auth only supports one filterField.
+        if (status === "pending") {
+          fetchedUsers = fetchedUsers.filter(u => !u.emailVerified)
+        }
+
+        setUsers(fetchedUsers)
         setTotal(res.data.total)
       }
 
@@ -178,16 +192,18 @@ export function UserListClient({ selfId }: { selfId: string }) {
           }`}
           title={roleIsActive ? "Clear the role filter first to filter by status" : undefined}
         >
-          {(["all", "active", "banned"] as StatusFilter[]).map((s) => (
+          {(["all", "active", "banned", "pending"] as StatusFilter[]).map((s) => (
             <Button
               key={s}
               size="sm"
               variant={statusFilter === s ? "default" : "outline"}
               onClick={() => !roleIsActive && setStatusFilter(s)}
               disabled={roleIsActive}
-              className="capitalize h-9"
+              className={`capitalize h-9 ${
+                s === "pending" ? "text-amber-600 border-amber-200 hover:bg-amber-50 hover:text-amber-700 data-[variant=default]:bg-amber-600 data-[variant=default]:text-white" : ""
+              }`}
             >
-              {s === "all" ? "All Status" : s}
+              {s === "all" ? "All Status" : s === "pending" ? "Pending Invite" : s}
             </Button>
           ))}
         </div>

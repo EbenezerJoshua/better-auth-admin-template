@@ -10,6 +10,7 @@ import { passkey } from "@better-auth/passkey"
 import { sendPasswordResetEmail } from "@/emails/sendPasswordResetMail";
 import { sendVerificationEmail } from "@/emails/sendVerificationMail";
 import { sendExistingUserSignUpMail } from "@/emails/sendExistingUserSignUpMail";
+import { sendInviteEmail } from "@/emails/sendInviteEmail";
 import { createAuthMiddleware } from "better-auth/api";
 import { sendWelcomeEmail } from "@/emails/sendWelcomeEmail";
 import { sendChangeEmailVerificationMail } from "@/emails/sendChangeEmailVerificationMail";
@@ -39,12 +40,29 @@ export const auth = betterAuth({
             //     required: true,
             // },
         // },
+        additionalFields: {
+            // This field tracks whether the user was invited by an admin
+            // and has not yet set their own password via the invite link.
+            invitePending: {
+                type: "boolean" as const,
+                required: false,
+                defaultValue: false,
+                // Prevent regular users from setting this field themselves
+                input: false,
+            },
+        },
     },
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
         sendResetPassword: async ({ user, url }) => {
-            await sendPasswordResetEmail({ user, url });
+            // If the user was invited by an admin, send the invitation email
+            // instead of the generic password reset email.
+            if ((user as any).invitePending) {
+                await sendInviteEmail({ user, url });
+            } else {
+                await sendPasswordResetEmail({ user, url });
+            }
         },
         onExistingUserSignUp: async (data: any) => {
             if (data?.user) {

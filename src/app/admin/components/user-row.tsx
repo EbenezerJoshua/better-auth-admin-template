@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { UserWithRole } from "better-auth/plugins/admin"
-import { MoreHorizontal, Shield, User, Calendar, Mail, Trash2, UserRoundX, Edit2, KeyRound, Monitor } from "lucide-react"
+import { MoreHorizontal, Shield, User, Calendar, Mail, Trash2, UserRoundX, Edit2, KeyRound, Monitor, MailPlus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -103,6 +103,20 @@ export function UserRow({
     )
   }
 
+  async function handleReInvite(userId: string) {
+    const res = await fetch("/api/invite", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    })
+    if (res.ok) {
+      toast.success("Invitation re-sent", { description: "A new invite link has been emailed." })
+    } else {
+      const data = await res.json()
+      toast.error(data.error || "Failed to re-send invitation")
+    }
+  }
+
   return (
     <div
       key={user.id}
@@ -173,7 +187,7 @@ export function UserRow({
                   <MoreHorizontal className="size-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem onClick={() => setDialogOpen("update")} className="gap-2">
                   <Edit2 className="size-4" />
                   Update User
@@ -186,6 +200,18 @@ export function UserRow({
                   <Monitor className="size-4" />
                   Manage Sessions
                 </DropdownMenuItem>
+
+                {/* Re-invite: only visible for invited-but-not-yet-active users */}
+                {(user as any).invitePending && !user.emailVerified && (
+                  <DropdownMenuItem
+                    onClick={() => handleReInvite(user.id)}
+                    className="gap-2 text-amber-600 focus:text-amber-700 focus:bg-amber-50"
+                  >
+                    <MailPlus className="size-4" />
+                    Re-send Invite
+                  </DropdownMenuItem>
+                )}
+
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem

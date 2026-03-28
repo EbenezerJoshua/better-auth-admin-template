@@ -4,7 +4,7 @@ import { ArrowLeft, Users } from "lucide-react"
 import { headers } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { CreateUserDialog } from "./components/create-user-dialog"
+import { InviteUserDialog } from "./components/invite-user-dialog"
 import { UserListClient } from "./components/user-list-client"
 
 export default async function AdminPage() {
@@ -39,7 +39,7 @@ export default async function AdminPage() {
               Manage user accounts, roles, and permissions across the platform
             </p>
           </div>
-          <CreateUserDialog />
+          <InviteUserDialog />
         </div>
       </div>
 
