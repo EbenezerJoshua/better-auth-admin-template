@@ -14,6 +14,7 @@ import {
   Key,
   LinkIcon,
   Loader2Icon,
+  Palette,
   Shield,
   Trash2,
   User,
@@ -32,6 +33,7 @@ import { AccountDeletion } from "./components/account-deletion"
 import { TwoFactorAuth } from "./components/two-factor-auth"
 import { PasskeyManagement } from "./components/passkey-management"
 import { PageTransition } from "@/components/ui/page-transition"
+import { ThemeSettings } from "./components/theme-settings"
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -74,7 +76,7 @@ export default async function ProfilePage() {
       </div>
 
       <Tabs className="space-y-2" defaultValue="profile">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="profile">
             <User />
             <span className="max-sm:hidden">Profile</span>
@@ -90,6 +92,10 @@ export default async function ProfilePage() {
           <TabsTrigger value="accounts">
             <LinkIcon />
             <span className="max-sm:hidden">Accounts</span>
+          </TabsTrigger>
+          <TabsTrigger value="appearance">
+            <Palette />
+            <span className="max-sm:hidden">Appearance</span>
           </TabsTrigger>
           <TabsTrigger value="danger">
             <Trash2 />
@@ -120,6 +126,10 @@ export default async function ProfilePage() {
           <LoadingSuspense>
             <LinkedAccountsTab />
           </LoadingSuspense>
+        </TabsContent>
+
+        <TabsContent value="appearance" className="mt-6">
+          <ThemeSettings />
         </TabsContent>
 
         <TabsContent value="danger" className="mt-6">
