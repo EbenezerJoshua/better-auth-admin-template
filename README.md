@@ -14,27 +14,33 @@ A sophisticated, production-ready authentication and administration foundation f
 - **Automated Verification Flow**: Intelligent redirection for unverified users, automatically firing verification emails upon login attempts to ensure a smooth onboarding experience.
 
 ### 🛡️ Powerful Admin Dashboard
-- **User Management**: 
-  - **Comprehensive List**: View all registered users with their roles, status, and join dates.
-  - **Create New Users**: Directly add new user accounts with initial passwords and role assignments.
-  - **Account Actions**: Ban or unban users instantly to maintain platform integrity.
-  - **Password Management**: Securely set or reset user passwords through a dedicated administrative interface.
-  - **Profile & Role Updates**: Effortlessly update user names and toggle administrative permissions.
-  - **Granular Session Management**: View active sessions with device/browser info and revoke specific sessions or all sessions at once.
-  - **User Deletion**: Securely remove user accounts and all associated data.
-- **Impersonation**: Securely log in as any user to troubleshoot issues or provide direct support.
-- **Role-Based Access Control (RBAC)**: Fine-grained permissions for Admin and User roles.
+- **Advanced User Management**: 
+  - **Live Search & Filtering**: Instantly find users by email or name, and filter the entire user base by role (Admin/User) or status (Active, Banned, or Pending Invitations).
+  - **Invite System**: Send secure email invitations to new users, streamlining the onboarding process for teams.
+  - **Manual User Creation**: Directly provision new accounts with predefined roles and credentials.
+  - **Password Control**: Securely set or reset passwords for any account via a dedicated administrative interface.
+  - **Profile & Role Orchestration**: Effortlessly update user details and manage platform permissions with a single click.
+  - **Granular Session Oversight**: Monitor active sessions with detailed device and browser telemetry; revoke specific sessions or clear all access remotely.
+  - **Absolute Account Control**: Securely ban/unban or permanently delete user data to maintain platform standards.
+- **Secure Impersonation**: Gain temporary access to user accounts for high-priority troubleshooting and direct support.
+- **Robust RBAC**: Industry-standard Role-Based Access Control protecting every administrative action.
 
 ### 👤 Advanced Profile Management
-- **Centralized Dashboard**: A clean overview of account status and connected services.
-- **Profile Customization**: Update display name and profile picture (Avatar support).
-- **Security Hub**:
-  - **Change Password**: Securely update credentials with verification.
-  - **Two-Factor Authentication (2FA)**: Add an extra layer of protection via TOTP (Authenticator apps like Google Authenticator).
-  - **Passkeys (WebAuthn)**: Go passwordless with modern biometric (TouchID/FaceID) or hardware keys.
-- **Session Control**: View and manage your own active sessions; revoke access to specific devices.
-- **Linked Accounts**: Connect multiple social providers to a single account.
-- **Danger Zone**: Secure account self-deletion process with email-based verification.
+- **Universal Dashboard**: A cohesive overview of account health, security status, and connected services.
+- **Identity Customization**: Seamlessly update roles, display names, and profile imagery with instant feedback.
+- **Adaptive Appearance**: Built-in **Theme Settings** to toggle between Light, Dark, or System-preferred aesthetics.
+- **Security Command Center**:
+  - **Credential Management**: Update existing passwords or set a new one for social-first accounts.
+  - **Advanced 2FA**: Mandatory or optional TOTP-based Multi-Factor Authentication (e.g., Google Authenticator).
+  - **Passkey Support**: Cutting-edge biometric (TouchID/FaceID) and hardware-key authentication.
+- **Self-Service Session Control**: Real-time monitoring and revocation of your own active devices.
+- **Provider Synergy**: Link or unlink multiple social providers to a single unified identity.
+- **Secure Data Removal**: A verified, multi-step process for permanent account deletion.
+
+### ✨ Premium UI/UX
+- **Fluid Motion**: Powered by **Framer Motion** for silky-smooth page transitions and micro-interactions.
+- **Responsive Excellence**: A mobile-first design that scales beautifully from smartphones to wide-screen monitors.
+- **Interactive Feedback**: Real-time toasts and loading states to ensure a responsive, high-end feel.
 
 ### 📧 Intelligent Communication
 - **Personalized Emails**: Fully styled, responsive email templates for:
@@ -52,6 +58,7 @@ A sophisticated, production-ready authentication and administration foundation f
 - **Framework**: [Next.js 15+](https://nextjs.org/) (App Router, React 19)
 - **Authentication**: [Better Auth](https://better-auth.com/) (Plugins: Admin, 2FA, Passkey, One Tap)
 - **Database**: [PostgreSQL](https://www.postgresql.org/) with [Drizzle ORM](https://orm.drizzle.team/)
+- **Animation**: [Framer Motion](https://www.framer.com/motion/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) & [Shadcn/UI](https://ui.shadcn.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Email**: [Nodemailer](https://nodemailer.com/)
