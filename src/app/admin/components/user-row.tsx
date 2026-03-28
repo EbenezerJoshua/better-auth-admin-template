@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { UserWithRole } from "better-auth/plugins/admin"
-import { MoreHorizontal, Shield, User, Calendar, Mail } from "lucide-react"
+import { MoreHorizontal, Shield, User, Calendar, Mail,Trash2, UserRoundX } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -201,7 +201,7 @@ export function UserRow({
                   </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem onClick={() => handleBanUser(user.id)} className="gap-2">
-                    <User className="size-4 text-orange-500" />
+                    <UserRoundX className="size-4 text-orange-500" />
                     Ban User
                   </DropdownMenuItem>
                 )}
@@ -209,7 +209,7 @@ export function UserRow({
 
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem variant="destructive" className="gap-2">
-                    <MoreHorizontal className="size-4" />
+                    <Trash2 className="size-4" />
                     Delete User
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
