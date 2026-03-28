@@ -31,13 +31,13 @@ export default async function AdminPage() {
             </Link>
           </Button>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold flex items-center gap-3">
                 <Users className="size-8 text-primary" />
                 Users
               </h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-sm sm:text-base">
                 Manage user accounts, roles, and permissions across the platform
               </p>
             </div>

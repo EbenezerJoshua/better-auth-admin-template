@@ -95,14 +95,14 @@ export function ProfileUpdateForm({
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <CardTitle>Name</CardTitle>
             <CardDescription>{user.name || "No name set"}</CardDescription>
           </div>
           <Dialog open={isNameOpen} onOpenChange={setIsNameOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-36">Change Name</Button>
+              <Button variant="outline" className="w-full sm:w-36">Change Name</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -140,14 +140,14 @@ export function ProfileUpdateForm({
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="space-y-1">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1 min-w-0 w-full sm:w-auto">
             <CardTitle>Email address</CardTitle>
-            <CardDescription>{user.email}</CardDescription>
+            <CardDescription className="truncate">{user.email}</CardDescription>
           </div>
           <Dialog open={isEmailOpen} onOpenChange={setIsEmailOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-36">Change Email</Button>
+              <Button variant="outline" className="w-full sm:w-36 shrink-0">Change Email</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

@@ -20,7 +20,7 @@ export function AccountDeletion() {
         </p>
       </CardContent>
 
-      <CardFooter className="p-6 bg-destructive/5 flex flex-col sm:flex-row justify-between items-center">
+      <CardFooter className="p-6 bg-destructive/5 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <p className="text-xs text-muted-foreground font-medium text-destructive/80">
           This action cannot be undone. Please be certain.
         </p>

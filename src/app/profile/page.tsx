@@ -50,56 +50,56 @@ export default async function ProfilePage() {
           </Link>
         </Button>
         <div className="flex items-center space-x-4">
-          <div className="size-16 bg-muted rounded-full flex items-center justify-center overflow-hidden">
+          <div className="size-16 bg-muted rounded-full flex items-center justify-center overflow-hidden shrink-0">
             {session.user.image ? (
               <Image
                 width={64}
                 height={64}
                 src={session.user.image}
                 alt="User Avatar"
-                className="object-cover"
+                className="object-cover size-full"
               />
             ) : (
               <User className="size-8 text-muted-foreground" />
             )}
           </div>
-          <div className="flex-1">
-            <div className="flex gap-1 justify-between items-start">
-              <h1 className="text-3xl font-bold">
+          <div className="flex-1 min-w-0">
+            <div className="flex gap-2 justify-between items-start sm:items-center flex-col sm:flex-row">
+              <h1 className="text-2xl sm:text-3xl font-bold truncate w-full sm:w-auto">
                 {session.user.name || "User Profile"}
               </h1>
-              <Badge>{session.user.role}</Badge>
+              <Badge className="shrink-0">{session.user.role}</Badge>
             </div>
-            <p className="text-muted-foreground">{session.user.email}</p>
+            <p className="text-muted-foreground truncate">{session.user.email}</p>
           </div>
         </div>
       </div>
 
       <Tabs className="space-y-2" defaultValue="profile">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="profile">
+        <TabsList className="flex overflow-x-auto no-scrollbar justify-start sm:grid sm:grid-cols-6 w-full h-auto py-1">
+          <TabsTrigger value="profile" className="shrink-0">
             <User />
-            <span className="max-sm:hidden">Profile</span>
+            <span>Profile</span>
           </TabsTrigger>
-          <TabsTrigger value="security">
+          <TabsTrigger value="security" className="shrink-0">
             <Shield />
-            <span className="max-sm:hidden">Security</span>
+            <span>Security</span>
           </TabsTrigger>
-          <TabsTrigger value="sessions">
+          <TabsTrigger value="sessions" className="shrink-0">
             <Key />
-            <span className="max-sm:hidden">Sessions</span>
+            <span>Sessions</span>
           </TabsTrigger>
-          <TabsTrigger value="accounts">
+          <TabsTrigger value="accounts" className="shrink-0">
             <LinkIcon />
-            <span className="max-sm:hidden">Accounts</span>
+            <span>Accounts</span>
           </TabsTrigger>
-          <TabsTrigger value="appearance">
+          <TabsTrigger value="appearance" className="shrink-0">
             <Palette />
-            <span className="max-sm:hidden">Appearance</span>
+            <span>Appearance</span>
           </TabsTrigger>
-          <TabsTrigger value="danger">
+          <TabsTrigger value="danger" className="shrink-0">
             <Trash2 />
-            <span className="max-sm:hidden">Danger</span>
+            <span>Danger</span>
           </TabsTrigger>
         </TabsList>
 

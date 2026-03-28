@@ -8,7 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { UserRow } from "./user-row"
 import { Search, X, Loader2 } from "lucide-react"
-import { StaggerContainer, StaggerItem } from "@/components/ui/page-transition"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -133,7 +140,7 @@ export function UserListClient({ selfId }: { selfId: string }) {
   return (
     <div className="space-y-5">
       {/* ── Toolbar ── */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col xl:flex-row gap-3">
         {/* Search box */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
@@ -156,57 +163,59 @@ export function UserListClient({ selfId }: { selfId: string }) {
           )}
         </div>
 
-        {/* Role filter pills */}
-        <div
-          className={`flex items-center gap-1.5 shrink-0 transition-opacity duration-200 ${
-            statusIsActive ? "opacity-40 cursor-not-allowed" : ""
-          }`}
-          title={statusIsActive ? "Clear the status filter first to filter by role" : undefined}
-        >
-          {(["all", "admin", "user"] as RoleFilter[]).map((r) => (
-            <Button
-              key={r}
-              size="sm"
-              variant={roleFilter === r ? "default" : "outline"}
-              onClick={() => !statusIsActive && setRoleFilter(r)}
-              disabled={statusIsActive}
-              className="capitalize h-9"
-            >
-              {r === "all" ? "All Roles" : r}
-            </Button>
-          ))}
-        </div>
-
-        {/* Conflict hint — only visible when one filter group is active */}
-        {(roleIsActive || statusIsActive) && (
-          <div className="flex items-center shrink-0">
-            <span className="text-[10px] text-muted-foreground/70 bg-muted px-2 py-1 rounded-md whitespace-nowrap">
-              One filter at a time
-            </span>
+        <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+          {/* Role filter pills */}
+          <div
+            className={`grid grid-cols-3 sm:flex items-center gap-1.5 shrink-0 transition-opacity duration-200 ${
+              statusIsActive ? "opacity-40 cursor-not-allowed" : ""
+            }`}
+            title={statusIsActive ? "Clear the status filter first to filter by role" : undefined}
+          >
+            {(["all", "admin", "user"] as RoleFilter[]).map((r) => (
+              <Button
+                key={r}
+                size="sm"
+                variant={roleFilter === r ? "default" : "outline"}
+                onClick={() => !statusIsActive && setRoleFilter(r)}
+                disabled={statusIsActive}
+                className="capitalize h-9 w-full sm:w-auto"
+              >
+                {r === "all" ? "All Roles" : r}
+              </Button>
+            ))}
           </div>
-        )}
 
-        {/* Status filter pills */}
-        <div
-          className={`flex items-center gap-1.5 shrink-0 transition-opacity duration-200 ${
-            roleIsActive ? "opacity-40 cursor-not-allowed" : ""
-          }`}
-          title={roleIsActive ? "Clear the role filter first to filter by status" : undefined}
-        >
-          {(["all", "active", "banned", "pending"] as StatusFilter[]).map((s) => (
-            <Button
-              key={s}
-              size="sm"
-              variant={statusFilter === s ? "default" : "outline"}
-              onClick={() => !roleIsActive && setStatusFilter(s)}
-              disabled={roleIsActive}
-              className={`capitalize h-9 ${
-                s === "pending" ? "text-amber-600 border-amber-200 hover:bg-amber-50 hover:text-amber-700 data-[variant=default]:bg-amber-600 data-[variant=default]:text-white" : ""
-              }`}
-            >
-              {s === "all" ? "All Status" : s === "pending" ? "Pending Invite" : s}
-            </Button>
-          ))}
+          {/* Conflict hint — only visible when one filter group is active */}
+          {(roleIsActive || statusIsActive) && (
+            <div className="flex items-center shrink-0 hidden sm:flex">
+              <span className="text-[10px] text-muted-foreground/70 bg-muted px-2 py-1 rounded-md whitespace-nowrap">
+                One filter at a time
+              </span>
+            </div>
+          )}
+
+          {/* Status filter pills */}
+          <div
+            className={`grid grid-cols-2 md:grid-cols-4 sm:flex items-center gap-1.5 shrink-0 transition-opacity duration-200 ${
+              roleIsActive ? "opacity-40 cursor-not-allowed" : ""
+            }`}
+            title={roleIsActive ? "Clear the role filter first to filter by status" : undefined}
+          >
+            {(["all", "active", "banned", "pending"] as StatusFilter[]).map((s) => (
+              <Button
+                key={s}
+                size="sm"
+                variant={statusFilter === s ? "default" : "outline"}
+                onClick={() => !roleIsActive && setStatusFilter(s)}
+                disabled={roleIsActive}
+                className={`capitalize h-9 w-full sm:w-auto ${
+                  s === "pending" ? "text-amber-600 border-amber-200 hover:bg-amber-50 hover:text-amber-700 data-[variant=default]:bg-amber-600 data-[variant=default]:text-white" : ""
+                }`}
+              >
+                {s === "all" ? "All Status" : s === "pending" ? "Pending" : s}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -252,36 +261,54 @@ export function UserListClient({ selfId }: { selfId: string }) {
         </div>
       )}
 
-      {/* ── User list ── */}
-      {loading ? (
-        <div className="flex items-center justify-center py-16 border rounded-xl bg-card">
-          <Loader2 className="size-6 animate-spin text-muted-foreground" />
-        </div>
-      ) : users.length === 0 ? (
-        <div className="text-center py-14 border rounded-xl bg-card">
-          {hasActiveFilters ? (
-            <>
-              <p className="text-muted-foreground font-medium">No users match your filters.</p>
-              <button
-                onClick={clearAllFilters}
-                className="mt-2 text-sm text-primary hover:underline"
-              >
-                Clear filters
-              </button>
-            </>
-          ) : (
-            <p className="text-muted-foreground">No users found.</p>
-          )}
-        </div>
-      ) : (
-        <StaggerContainer className="space-y-4">
-          {users.map((user) => (
-            <StaggerItem key={user.id}>
-              <UserRow user={user} selfId={selfId} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      )}
+      {/* ── User Data Table ── */}
+      <div className="rounded-xl border bg-card overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 hover:bg-muted/50 uppercase text-xs tracking-wider">
+              <TableHead className="w-[40%] min-w-[220px] pl-4 sm:pl-6">User</TableHead>
+              <TableHead className="w-[25%] min-w-[150px]">Role & Status</TableHead>
+              <TableHead className="w-[20%] min-w-[140px]">Joined Date</TableHead>
+              <TableHead className="w-[15%] min-w-[100px] text-right pr-4 sm:pr-6">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={4} className="h-48 text-center">
+                  <div className="flex items-center justify-center">
+                    <Loader2 className="size-6 animate-spin text-muted-foreground" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : users.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} className="h-48 text-center">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    {hasActiveFilters ? (
+                      <>
+                        <p className="text-muted-foreground font-medium">No users match your filters.</p>
+                        <button
+                          onClick={clearAllFilters}
+                          className="text-sm text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </>
+                    ) : (
+                      <p className="text-muted-foreground">No users found.</p>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              users.map((user) => (
+                <UserRow key={user.id} user={user} selfId={selfId} />
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       {/* ── Result count (when no active filters) ── */}
       {!hasActiveFilters && !loading && users.length > 0 && (
