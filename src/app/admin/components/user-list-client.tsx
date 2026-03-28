@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { UserRow } from "./user-row"
 import { Search, X, Loader2 } from "lucide-react"
+import { StaggerContainer, StaggerItem } from "@/components/ui/page-transition"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -273,11 +274,13 @@ export function UserListClient({ selfId }: { selfId: string }) {
           )}
         </div>
       ) : (
-        <div className="space-y-4">
+        <StaggerContainer className="space-y-4">
           {users.map((user) => (
-            <UserRow key={user.id} user={user} selfId={selfId} />
+            <StaggerItem key={user.id}>
+              <UserRow user={user} selfId={selfId} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       )}
 
       {/* ── Result count (when no active filters) ── */}

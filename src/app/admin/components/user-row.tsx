@@ -157,7 +157,7 @@ export function UserRow({
               <Mail className="size-3" />
               {user.email}
               {!user.emailVerified && (
-                <span className="text-[10px] text-orange-500 font-medium ml-1 bg-orange-500/10 px-1.5 py-0.5 rounded-full border border-orange-500/20">
+                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium ml-1 bg-amber-500/10 px-1.5 py-0.5 rounded-full border border-amber-500/20">
                   Unverified
                 </span>
               )}
@@ -228,7 +228,7 @@ export function UserRow({
                   </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem onClick={() => handleBanUser(user.id)} className="gap-2">
-                    <UserRoundX className="size-4 text-orange-500" />
+                    <UserRoundX className="size-4 text-amber-600 dark:text-amber-400" />
                     Ban User
                   </DropdownMenuItem>
                 )}

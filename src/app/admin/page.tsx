@@ -6,6 +6,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { InviteUserDialog } from "./components/invite-user-dialog"
 import { UserListClient } from "./components/user-list-client"
+import { PageTransition } from "@/components/ui/page-transition"
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -20,30 +21,32 @@ export default async function AdminPage() {
   if (!hasAdminAccess.success) return redirect("/")
 
   return (
-    <div className="max-w-4xl mx-auto my-6 px-4">
-      <div className="mb-8">
-        <Button variant="ghost" className="mb-6 rounded-full -ml-4 text-muted-foreground hover:text-foreground" asChild>
-          <Link href="/dashboard" className="inline-flex items-center text-sm">
-            <ArrowLeft className="size-4 mr-2" />
-            Back to Dashboard
-          </Link>
-        </Button>
-        
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Users className="size-8 text-primary" />
-              Users
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Manage user accounts, roles, and permissions across the platform
-            </p>
-          </div>
-          <InviteUserDialog />
-        </div>
-      </div>
+    <PageTransition>
+      <div className="max-w-4xl mx-auto my-6 px-4">
+        <div className="mb-8">
+          <Button variant="ghost" className="mb-6 rounded-full -ml-4 text-muted-foreground hover:text-foreground" asChild>
+            <Link href="/dashboard" className="inline-flex items-center text-sm">
+              <ArrowLeft className="size-4 mr-2" />
+              Back to Dashboard
+            </Link>
+          </Button>
 
-      <UserListClient selfId={session.user.id} />
-    </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <Users className="size-8 text-primary" />
+                Users
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                Manage user accounts, roles, and permissions across the platform
+              </p>
+            </div>
+            <InviteUserDialog />
+          </div>
+        </div>
+
+        <UserListClient selfId={session.user.id} />
+      </div>
+    </PageTransition>
   )
 }

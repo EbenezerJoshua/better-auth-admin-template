@@ -112,7 +112,7 @@ export function ManageSessionsDialog({
                         <span className="flex items-center gap-1">
                           Created: {new Date(session.createdAt).toLocaleString()}
                         </span>
-                        <span className="flex items-center gap-1 text-orange-500/80">
+                        <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
                           Expires: {new Date(session.expiresAt).toLocaleString()}
                         </span>
                       </div>

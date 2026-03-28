@@ -31,12 +31,14 @@ import { AccountLinking } from "./components/account-linking"
 import { AccountDeletion } from "./components/account-deletion"
 import { TwoFactorAuth } from "./components/two-factor-auth"
 import { PasskeyManagement } from "./components/passkey-management"
+import { PageTransition } from "@/components/ui/page-transition"
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({ headers: await headers() })
   if (session == null) return redirect("/login")
 
   return (
+    <PageTransition>
     <div className="max-w-4xl mx-auto my-6 px-4">
       <div className="mb-8">
         <Button variant="ghost" className="mb-6 rounded-full -ml-4 text-muted-foreground hover:text-foreground" asChild>
@@ -125,6 +127,7 @@ export default async function ProfilePage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageTransition>
   )
 }
 
