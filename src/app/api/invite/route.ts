@@ -94,6 +94,14 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // Mark the email as already verified.
+  // The admin confirmed this email address, and the invite link itself
+  // proves the user owns the inbox — no separate verification step needed.
+  await db
+    .update(schema.user)
+    .set({ emailVerified: true })
+    .where(eq(schema.user.email, email))
+
   // Trigger the password-reset flow to generate a signed token.
   // auth.ts routes this to sendInviteEmail because invitePending = true.
   await auth.api.requestPasswordReset({
